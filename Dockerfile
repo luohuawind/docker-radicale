@@ -1,5 +1,20 @@
 FROM alpine:3
+# --- 为了符合标注规范而添加的配置 ---
+# 1. 设置工作目录为 /app
+WORKDIR /app
 
+# 2. 安装 Git（容器内要有 git 命令）
+RUN apk add --no-cache git
+
+# 3. 在 /app 目录下初始化一个空的 Git 仓库
+RUN git init
+
+# 4. 复制本项目所有代码到 /app 目录下
+COPY . /app/
+
+# 5. （可选但推荐）做一个初始提交，让 Git 仓库处于一个干净的状态
+RUN git add . && git commit -m "Initial state for annotation"
+# ---------------------------------
 ARG COMMIT_ID
 ENV COMMIT_ID=${COMMIT_ID}
 
